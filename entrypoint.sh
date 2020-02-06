@@ -19,7 +19,7 @@ if [ ! -e "${APP_DIR}/app/__init__.py" ]; then
 fi
 
 if [ -e "${APP_DIR}/app/requirements-alpine.txt" ]; then
-	pip3 install --upgrade -r "${APP_DIR}/app/requirements-alpine.txt"
+	apk add --no-cache $(cat "${APP_DIR}/app/requirements-alpine.txt")
 fi
 
 if [ -e "${APP_DIR}/app/requirements.txt" ]; then

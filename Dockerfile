@@ -9,6 +9,13 @@ ENV FLASK_RUN_HOST 0.0.0.0
 RUN apk add --no-cache nginx \
 	python3 \
 	python3-dev \
+	mariadb-dev \
+	postgresql-dev \
+	imagemagick-dev \
+	libffi-dev \
+	py3-sqlalchemy \
+	py3-mysqlclient \
+	py3-psycopg2 \
 	py3-gevent \
 	uwsgi \
 	uwsgi-python3 \
@@ -17,7 +24,7 @@ RUN apk add --no-cache nginx \
 	py3-pip \
 	&& pip3 install --upgrade pip \
 	&& pip3 install --upgrade setuptools \
-	&& pip3 install flask python-dotenv flaskcode requests flask-login Flask-SQLAlchemy Flask-Limiter flask-mail Flask-WTF \
+	&& pip3 install --no-cache-dir flask python-dotenv flaskcode requests flask-login Flask-SQLAlchemy Flask-Limiter flask-mail Flask-WTF \
 	&& find / -type d -name __pycache__ -exec rm -r {} + \
 	&& rm -rf /root/.cache /var/cache
 

@@ -6,25 +6,31 @@ ENV FLASK_DEBUG True
 ENV FLASK_RUN_PORT 8080
 ENV FLASK_RUN_HOST 0.0.0.0
 
-RUN apk add --no-cache nginx \
+RUN apk add --no-cache git nginx \
 	python3 \
-	python3-dev \
-	mariadb-dev \
-	postgresql-dev \
-	imagemagick-dev \
-	libffi-dev \
-	py3-sqlalchemy \
-	py3-mysqlclient \
-	py3-psycopg2 \
-	py3-gevent \
-	uwsgi \
-	uwsgi-python3 \
-	uwsgi-http \
-	uwsgi-gevent3 \
+	# dev libs for building
+	python3-dev mariadb-dev postgresql-dev imagemagick-dev libffi-dev \
+	py3-openssl \
+	# uwsgi packages and extensions
+	uwsgi uwsgi-python3 uwsgi-http uwsgi-gevent3 py3-gevent \
+	# python pip
 	py3-pip \
 	&& pip3 install --upgrade pip \
 	&& pip3 install --upgrade setuptools \
-	&& pip3 install --no-cache-dir flask python-dotenv flaskcode requests flask-login Flask-SQLAlchemy Flask-Limiter flask-mail Flask-WTF \
+	# SQLAlchemy
+	&& apk add --no-cache py3-sqlalchemy \
+	# pymysql for SQLAlchemy (mysql+pymysql://<username>:<password>@<host>/<dbname>[?<options>])
+	&& apk add --no-cache py3-mysqlclient \
+	# psycopg2 for SQLAlchemy (postgresql+psycopg2://user:password@host:port/dbname[?key=value&key=value...])
+	&& apk add --no-cache py3-psycopg2 \
+	# disable -> https://github.com/pymssql/pymssql/issues/586
+	# pymssql for SQLAlchemy (mssql+pymssql://<username>:<password>@<freetds_name>/?charset=utf8)
+	# && apk add --no-cache musl-dev cython \
+	# && pip3 install --no-cache-dir python-tds bitarray pymssql \
+	# Flask + Extensions
+	&& pip3 install --no-cache-dir flask flask-login Flask-SQLAlchemy Flask-Limiter flask-mail Flask-WTF \
+	# Tools
+	&& pip3 install --no-cache-dir python-dotenv requests flaskcode \
 	&& find / -type d -name __pycache__ -exec rm -r {} + \
 	&& rm -rf /root/.cache /var/cache
 

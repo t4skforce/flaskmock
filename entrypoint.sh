@@ -5,7 +5,7 @@ if [ "$FLASK_SECRET_KEY" = "" ]; then
 fi
 
 if [ -e requirements-alpine.txt ]; then
-	apk add --no-cache $(cat requirements-alpine.txt)
+	apk add --update --no-cache $(cat requirements-alpine.txt)
 fi
 
 if [ -e requirements.txt ]; then
@@ -19,7 +19,7 @@ if [ ! -e "${APP_DIR}/app/__init__.py" ]; then
 fi
 
 if [ -e "${APP_DIR}/app/requirements-alpine.txt" ]; then
-	apk add --no-cache $(cat "${APP_DIR}/app/requirements-alpine.txt")
+	apk add --update --no-cache $(cat "${APP_DIR}/app/requirements-alpine.txt")
 fi
 
 if [ -e "${APP_DIR}/app/requirements.txt" ]; then
